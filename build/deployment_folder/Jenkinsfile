@@ -1,19 +1,27 @@
-pipeline {
- agent any 
- stages{
+node{
+ def app
+ 
     stage('Clone Repo')
     {
-     steps{echo "clone"}}
+     final scmVars = checkout(scm)
+     env.BRANCH_NAME = scm.GIT_BRANCH
+     env.SHORT_COMMIT ="${scmVars.GIT_COMMIT[0..7]}"
+     
+        env.GIT_REPO_NAME = scmVars.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
+     echo "clone"}
      stage ('Clean Maven')
     {
-     steps{bat mvn clean
-           echo "clean maven"}}
+     withMaven(maven:'M3'){
+    ssh mvn clean
+      echo "clean maven"}}
+ 
     stage('Run tests')
-    {
-     steps{bat mvn test
-           echo "run tests"}}
+    { withMaven(maven:'M3'){
+     ssh mvn test
+     echo "run tests"}}
+ 
     stage('Run sonarqube report')
-  { steps{ echo "run report"}}
+  { echo "run report"}
     }
 }
   
