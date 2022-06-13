@@ -1,37 +1,68 @@
-node{
- def app
+// node{
+//  def app
  
  
-  tools {
+//   tools {
+//         // Install the Maven version configured as "M3" and add it to the path.
+//         maven "M3"
+//     }
+//     stage('Clone Repo')
+//     {
+//      final scmVars = checkout(scm)
+//      env.BRANCH_NAME = scm.GIT_BRANCH
+//      env.SHORT_COMMIT ="${scmVars.GIT_COMMIT[0..7]}"
+     
+//         env.GIT_REPO_NAME = scmVars.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
+//      echo "clone"}
+//      stage ('Clean Maven')
+//     {
+//      withMaven(maven:'M3'){
+//     ssh mvn clean
+//       echo "clean maven"}}
+ 
+//     stage('Run tests')
+//     { withMaven(maven:'M3'){
+//      ssh mvn test
+//      echo "run tests"}}
+ 
+//     stage('Run sonarqube report')
+//   { echo "run report"}
+    
+// }
+// def version()
+// {
+//     pom = readMavenPom file: 'pom.xml'
+//     return pom.version
+// }
+  pipeline {
+    agent any
+
+    tools {
         // Install the Maven version configured as "M3" and add it to the path.
         maven "M3"
     }
-    stage('Clone Repo')
-    {
-     final scmVars = checkout(scm)
-     env.BRANCH_NAME = scm.GIT_BRANCH
-     env.SHORT_COMMIT ="${scmVars.GIT_COMMIT[0..7]}"
-     
-        env.GIT_REPO_NAME = scmVars.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
-     echo "clone"}
-     stage ('Clean Maven')
-    {
-     withMaven(maven:'M3'){
-    ssh mvn clean
-      echo "clean maven"}}
- 
-    stage('Run tests')
-    { withMaven(maven:'M3'){
-     ssh mvn test
-     echo "run tests"}}
- 
-    stage('Run sonarqube report')
-  { echo "run report"}
-    
+
+    stages {
+        stage('Build') {
+            steps {
+                // Get some code from a GitHub repository
+                git 'https://github.com/jglick/simple-maven-project-with-tests.git'
+
+                // Run Maven on a Unix agent.
+                sh "mvn -Dmaven.test.failure.ignore=true clean package"
+
+                // To run Maven on a Windows agent, use
+                // bat "mvn -Dmaven.test.failure.ignore=true clean package"
+            }
+
+            post {
+                // If Maven was able to run the tests, even if some of the test
+                // failed, record the test results and archive the jar file.
+                success {
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                    archiveArtifacts 'target/*.jar'
+                }
+            }
+        }
+    }
 }
-def version()
-{
-    pom = readMavenPom file: 'pom.xml'
-    return pom.version
-}
-  
