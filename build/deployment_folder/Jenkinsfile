@@ -1,14 +1,13 @@
 try{
-node {
+    node {
     stage('Clone Repo')
-    {}
+    {
+     echo "clone"}
     stage ('Clean Maven')
-    {}
+    { echo "clean maven"}
     stage('Run tests')
-    {}
+    { echo "run tests"}
     stage('Run sonarqube report')
-    {}
+    { echo "run report"}
     }
-    
-catch{
-}
+  
