@@ -1,6 +1,11 @@
 node{
  def app
  
+ 
+  tools {
+        // Install the Maven version configured as "M3" and add it to the path.
+        maven "M3"
+    }
     stage('Clone Repo')
     {
      final scmVars = checkout(scm)
@@ -11,12 +16,12 @@ node{
      echo "clone"}
      stage ('Clean Maven')
     {
-     withMaven(maven:'3_10_0'){
+     withMaven(maven:'M3'){
     ssh mvn clean
       echo "clean maven"}}
  
     stage('Run tests')
-    { withMaven(maven:'3_10_0'){
+    { withMaven(maven:'M3'){
      ssh mvn test
      echo "run tests"}}
  
