@@ -1,16 +1,19 @@
- node {
+pipeline {
+ agent any 
+ stages{
     stage('Clone Repo')
     {
-     echo "clone"}
-    stage ('Clean Maven')
+     steps{echo "clone"}}
+     stage ('Clean Maven')
     {
-     bat mvn clean
-     echo "clean maven"}
+     steps{bat mvn clean
+           echo "clean maven"}}
     stage('Run tests')
     {
-     bat mvn test
-     echo "run tests"}
+     steps{bat mvn test
+           echo "run tests"}}
     stage('Run sonarqube report')
-    { echo "run report"}
+  { steps{ echo "run report"}}
     }
+}
   
