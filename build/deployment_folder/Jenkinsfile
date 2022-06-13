@@ -11,7 +11,7 @@ node{
      echo "clone"}
      stage ('Clean Maven')
     {
-     withMaven(maven:'maven_3_0_0'){
+     withMaven(maven:'maven_3_0_0_M3'){
     ssh mvn clean
       echo "clean maven"}}
  
