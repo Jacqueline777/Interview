@@ -1,5 +1,4 @@
-try{
-    node {
+ node {
     stage('Clone Repo')
     {
      echo "clone"}
