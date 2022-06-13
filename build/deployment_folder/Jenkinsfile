@@ -24,4 +24,9 @@ node{
   { echo "run report"}
     
 }
+def version()
+{
+    pom = readMavenPom file: 'pom.xml'
+    return pom.version
+}
   
