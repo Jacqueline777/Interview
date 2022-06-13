@@ -3,9 +3,13 @@
     {
      echo "clone"}
     stage ('Clean Maven')
-    { echo "clean maven"}
+    {
+     mvn clean
+     echo "clean maven"}
     stage('Run tests')
-    { echo "run tests"}
+    {
+     mvn test
+     echo "run tests"}
     stage('Run sonarqube report')
     { echo "run report"}
     }
