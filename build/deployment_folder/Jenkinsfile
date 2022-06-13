@@ -1,0 +1,14 @@
+try{
+node {
+    stage('Clone Repo')
+    {}
+    stage ('Clean Maven')
+    {}
+    stage('Run tests')
+    {}
+    stage('Run sonarqube report')
+    {}
+    }
+    
+catch{
+}

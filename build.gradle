@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    implementation 'junit:junit:4.13.2'
+    implementation fileTree(dir: 'libs')
+
+    implementation group: 'io.cucumber', name: 'cucumber-java', version: '6.11.0'
+
+
+
+}
+
+publishing{
+    publications{
+        maven(MavenPublication){
+            groupId 'com.interview'
+            artifactId 'mpesa-refresh'
+            version '1.1'
+            from components.java
+        }
+    }
+}
+
+test {
+//    useJUnitPlatform()
+    ignoreFailures = true
+    systemProperty "cucumber.options",System.getProperty("cucumber.options")
+}
+
+gradle.startParameter.continueOnFailure = true
