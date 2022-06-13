@@ -11,12 +11,12 @@ node{
      echo "clone"}
      stage ('Clean Maven')
     {
-     withMaven(maven:'M3'){
+     withMaven{
     ssh mvn clean
       echo "clean maven"}}
  
     stage('Run tests')
-    { withMaven(maven:'M3'){
+    { withMaven{
      ssh mvn test
      echo "run tests"}}
  
