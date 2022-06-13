@@ -22,6 +22,6 @@ node{
  
     stage('Run sonarqube report')
   { echo "run report"}
-    }
+    
 }
   
